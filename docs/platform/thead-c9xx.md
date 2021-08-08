@@ -53,7 +53,6 @@ DTS Example1: (Single core, eg: Allwinner D1 - c906)
 
 		reset: reset-sample {
 			compatible = "thead,reset-sample";
-			plic-delegate = <0x0 0x101ffffc>;
 		};
 
 		clint0: clint@14000000 {
@@ -150,7 +149,6 @@ DTS Example2: (Multi cores with soc reset-regs)
 
 		reset: reset-sample {
 			compatible = "thead,reset-sample";
-			plic-delegate = <0xff 0xd81ffffc>;
 			entry-reg = <0xff 0xff019050>;
 			entry-cnt = <4>;
 			control-reg = <0xff 0xff015004>;
@@ -194,7 +192,6 @@ DTS Example2: (Multi cores with old reset csrs)
 ```
 	reset: reset-sample {
 		compatible = "thead,reset-sample";
-		plic-delegate = <0xff 0xd81ffffc>;
 		using-csr-reset;
 		csr-copy = <0x7c0 0x7c1 0x7c2 0x7c3 0x7c5 0x7cc
 			    0x3b0 0x3b1 0x3b2 0x3b3
