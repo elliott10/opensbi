@@ -74,6 +74,7 @@ export firmware_dir=$(CURDIR)/firmware
 OPENSBI_VERSION_MAJOR=`grep "define OPENSBI_VERSION_MAJOR" $(include_dir)/sbi/sbi_version.h | sed 's/.*MAJOR.*\([0-9][0-9]*\)/\1/'`
 OPENSBI_VERSION_MINOR=`grep "define OPENSBI_VERSION_MINOR" $(include_dir)/sbi/sbi_version.h | sed 's/.*MINOR.*\([0-9][0-9]*\)/\1/'`
 OPENSBI_VERSION_GIT=$(shell if [ -d $(src_dir)/.git ]; then git describe 2> /dev/null; fi)
+OPENSBI_BUILD_TS=$(shell date)
 
 # Setup compilation commands
 ifneq ($(LLVM),)
@@ -149,6 +150,8 @@ endif
 
 # Check whether the linker supports creating PIEs
 OPENSBI_LD_PIE := $(shell $(CC) $(CLANG_TARGET) $(RELAX_FLAG) $(USE_LD_FLAG) -fPIE -nostdlib -Wl,-pie -x c /dev/null -o /dev/null >/dev/null 2>&1 && echo y || echo n)
+
+OPENSBI_COMPILER_VERSION_TEXT=$(shell $(CC) -v 2>&1 | grep ' version ' | sed 's/[[:space:]]*$$//')
 
 # Setup list of objects.mk files
 ifdef PLATFORM
@@ -247,6 +250,8 @@ GENFLAGS	+=	-I$(include_dir)
 ifneq ($(OPENSBI_VERSION_GIT),)
 GENFLAGS	+=	-DOPENSBI_VERSION_GIT="\"$(OPENSBI_VERSION_GIT)\""
 endif
+GENFLAGS	+=	-DOPENSBI_BUILD_TS="\"$(OPENSBI_BUILD_TS)\""
+GENFLAGS	+=	-DOPENSBI_COMPILER_VERSION_TEXT="\"$(OPENSBI_COMPILER_VERSION_TEXT)\""
 GENFLAGS	+=	$(libsbiutils-genflags-y)
 GENFLAGS	+=	$(platform-genflags-y)
 GENFLAGS	+=	$(firmware-genflags-y)

@@ -48,6 +48,8 @@ static void sbi_boot_print_banner(struct sbi_scratch *scratch)
 		   OPENSBI_VERSION_MINOR);
 #endif
 
+	sbi_printf("Build @ %s.\n", OPENSBI_BUILD_TS);
+	sbi_printf("Built by %s.\n", OPENSBI_COMPILER_VERSION_TEXT);
 	sbi_printf(BANNER);
 }
 
