@@ -3,3 +3,4 @@
 #
 
 platform-objs-y += sunxi_platform.o opensbi_head.o sunxi_cpuidle.o sunxi_idle.o
+platform-dtb-y += d1_c906.dtb

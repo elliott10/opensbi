@@ -119,6 +119,8 @@ static int sunxi_console_init(void)
 
 static int c910_irqchip_init(bool cold_boot)
 {
+	sbi_printf("+++++ C910_PLIC_DELEG_ENABLE\n");
+
 	/* Delegate plic enable into S-mode */
 	writel(C910_PLIC_DELEG_ENABLE,
 		(void *)c910_regs.plic_base_addr + C910_PLIC_DELEG_OFFSET);
