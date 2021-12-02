@@ -239,7 +239,12 @@ or
 ```
 make I=<install_directory> install_docs
 ```
-
+### Build D1 FW
+```
+make PLATFORM=thead/c910 CROSS_COMPILE=/path/to/bin/riscv64-unknown-linux-gnu- SUNXI_CHIP=sun20iw1p1 PLATFORM_RISCV_ISA=rv64gcxthead
+```
+Output:`build/platform/thead/c910/firmware/fw_payload.elf`
+   
 *refman.pdf* will be installed under *<install_directory>/docs*.
 
 [Github]: https://github.com/riscv/riscv-sbi-doc
