@@ -115,6 +115,24 @@ triple is used (e.g. *-target riscv64-unknown-elf*).
 Please note that only a 64-bit version of the toolchain is available in
 the Bootlin toolchain repository for now.
 
+### Building OpenSBI for Sifive Unmatched fu740
+
+```
+cd /path/opensbi/version/git
+rsysroot="$PWD/../recipe-sysroot-native"
+export PATH=$rsysroot/usr/bin/riscv64-oe-linux:$rsysroot/usr/bin:$rsysroot/usr/sbin:$rsysroot/bin:$rsysroot/sbin:$PATH
+
+export CC="riscv64-oe-linux-gcc -mtune=sifive-7-series --sysroot=$PWD/../recipe-sysroot"
+export CFLAGS=" -O2 -pipe -g -feliminate-unused-debug-types "
+export LD="riscv64-oe-linux-ld --sysroot=$PWD/../recipe-sysroot "
+export LDFLAGS="-Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed "
+export AR="riscv64-oe-linux-gcc-ar"
+export OBJCOPY="riscv64-oe-linux-objcopy"
+
+make PLATFORM=generic I=$PWD/../image INSTALL_LIB_PATH=lib FW_PIC=n
+
+```
+
 Building and Installing the OpenSBI Platform-Independent Library
 ----------------------------------------------------------------
 
