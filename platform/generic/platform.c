@@ -22,6 +22,7 @@
 #include <sbi_utils/timer/fdt_timer.h>
 #include <sbi_utils/ipi/fdt_ipi.h>
 #include <sbi_utils/reset/fdt_reset.h>
+#include <sbi/sbi_console.h>
 
 extern const struct platform_override sifive_fu540;
 extern const struct platform_override sifive_fu740;
@@ -138,6 +139,15 @@ static int generic_final_init(bool cold_boot)
 {
 	void *fdt;
 	int rc;
+
+	#define CSR_MXSTATUS    0x7c0
+	unsigned long mxstatus_val = 0;
+	mxstatus_val = csr_read(CSR_MXSTATUS);
+	sbi_printf("+++ T-HEAD MXSTATUS: %#lx\n", mxstatus_val);
+	// Disable MAEE
+	mxstatus_val &= ~(1 << 21);
+	csr_write(CSR_MXSTATUS, mxstatus_val);
+	sbi_printf("+++ Setting MXSTATUS: %#lx\n\n", mxstatus_val);
 
 	if (generic_plat && generic_plat->final_init) {
 		rc = generic_plat->final_init(cold_boot, generic_plat_match);
