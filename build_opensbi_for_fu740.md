@@ -1,4 +1,8 @@
 # 编译并烧写opensbi for fu740
+### (可选)下载交叉编译起
+下载 https://musl.cc/riscv64-linux-musl-cross.tgz
+
+解压并把包含riscv64编译器的bin路径放入`PATH`环境变量
 
 ### opensbi for fu740
 opensbi 源码
