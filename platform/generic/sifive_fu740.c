@@ -239,6 +239,8 @@ static int sifive_fu740_final_init(bool cold_boot,
 				   __func__);
 	}
 
+	sbi_printf("+++ OpenSBI %s: fdt address: 0x%p\n", __func__, fdt);
+
 	return 0;
 }
 
