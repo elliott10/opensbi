@@ -16,7 +16,8 @@
 #include <sbi_utils/irqchip/plic.h>
 #include <sbi_utils/sys/clint.h>
 
-#define DEFAULT_UART_FREQ		0
+// ICE-RVB Uart clock-frequency
+#define DEFAULT_UART_FREQ		62500000
 #define DEFAULT_UART_BAUD		115200
 #define DEFAULT_UART_REG_SHIFT		0
 #define DEFAULT_UART_REG_IO_WIDTH	1

@@ -342,6 +342,8 @@ static int thead_vendor_ext_provider(long extid, long funcid,
 	return 0;
 }
 
+// TODO: configure pmp for thead ice
+
 const struct sbi_platform_operations platform_ops = {
 	.vendor_ext_provider	= thead_vendor_ext_provider,
 	.early_init		= generic_early_init,
