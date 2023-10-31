@@ -12,6 +12,7 @@
 #include <sbi/riscv_asm.h>
 #include <sbi/sbi_hartmask.h>
 #include <sbi/sbi_platform.h>
+#include <sbi/sbi_console.h>
 #include <sbi/sbi_string.h>
 #include <sbi_utils/fdt/fdt_domain.h>
 #include <sbi_utils/fdt/fdt_fixup.h>
@@ -30,6 +31,43 @@ static const struct platform_override *special_platforms[] = {
 
 static const struct platform_override *generic_plat = NULL;
 static const struct fdt_match *generic_plat_match = NULL;
+
+/* T-HEAD C910 REGS */
+#define CSR_SMPEN	0x7f3
+#define CSR_MTEE	0x7f4
+#define CSR_MCOR        0x7c2
+#define CSR_MHCR        0x7c1
+#define CSR_MCCR2       0x7c3
+#define CSR_MHINT       0x7c5
+#define CSR_MXSTATUS    0x7c0
+#define CSR_PLIC_BASE   0xfc1
+#define sync_is()   asm volatile (".long 0x01b0000b")
+
+static void sbi_thead_mxstatus_set(unsigned long type)
+{
+	unsigned long mxstatus_val = 0;
+	unsigned long mcor_val = 0;
+	// csr_write(CSR_MXSTATUS, 0x638000);
+	mxstatus_val = csr_read(CSR_MXSTATUS);
+	sbi_printf("+++ T-HEAD MXSTATUS: %#lx\n", mxstatus_val);
+
+	mcor_val = csr_read(CSR_MCOR);
+	sbi_printf("+++ T-HEAD MCOR: %#lx\n", mcor_val);
+
+	// Set THEAD ISAEE
+	mxstatus_val |= (1 << 22);
+
+	// Disable MAEE
+	mxstatus_val &= ~(1 << 21);
+	sbi_printf("+++ Setting MXSTATUS: %#lx\n", mxstatus_val);
+	csr_write(CSR_MXSTATUS, mxstatus_val);
+
+/*
+	mcor_val |= 0x30013;
+	sbi_printf("+++ Setting MCOR: %#lx\n", mcor_val);
+	csr_write(CSR_MCOR, mcor_val);
+*/
+}
 
 static void fw_platform_lookup_special(void *fdt, int root_offset)
 {
@@ -156,6 +194,8 @@ static int generic_final_init(bool cold_boot)
 		if (rc)
 			return rc;
 	}
+
+	sbi_thead_mxstatus_set(1);
 
 	return 0;
 }
