@@ -783,7 +783,7 @@ int sbi_pmu_ctr_cfg_match(unsigned long cidx_base, unsigned long cidx_mask,
 
 	phs->active_events[ctr_idx] = event_idx;
 skip_match:
-	if (event_type == SBI_PMU_EVENT_TYPE_HW) {
+	if (event_type <= SBI_PMU_EVENT_TYPE_HW_RAW) {
 		if (flags & SBI_PMU_CFG_FLAG_CLEAR_VALUE)
 			pmu_ctr_write_hw(ctr_idx, 0);
 		if (flags & SBI_PMU_CFG_FLAG_AUTO_START)
