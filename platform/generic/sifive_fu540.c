@@ -10,6 +10,7 @@
 #include <platform_override.h>
 #include <sbi_utils/fdt/fdt_helper.h>
 #include <sbi_utils/fdt/fdt_fixup.h>
+#include <sbi/sbi_console.h>
 
 static u64 sifive_fu540_tlbr_flush_limit(const struct fdt_match *match)
 {
@@ -32,6 +33,15 @@ static int sifive_fu540_fdt_fixup(void *fdt, const struct fdt_match *match)
 	return 0;
 }
 
+static int sifive_fu540_final_init(bool cold_boot,
+				   const struct fdt_match *match)
+{
+	void *fdt = fdt_get_address();
+	sbi_printf("+++ OpenSBI %s: fdt address: 0x%p\n", __func__, fdt);
+
+	return 0;
+}
+
 static const struct fdt_match sifive_fu540_match[] = {
 	{ .compatible = "sifive,fu540" },
 	{ .compatible = "sifive,fu540g" },
@@ -44,4 +54,5 @@ const struct platform_override sifive_fu540 = {
 	.match_table = sifive_fu540_match,
 	.tlbr_flush_limit = sifive_fu540_tlbr_flush_limit,
 	.fdt_fixup = sifive_fu540_fdt_fixup,
+	.final_init = sifive_fu540_final_init,
 };
